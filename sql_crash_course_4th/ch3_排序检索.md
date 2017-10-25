@@ -11,7 +11,19 @@ FROM Products
 ORDER BY prod_name;
 ```
 
-![](http://ww1.sinaimg.cn/large/006RLzNagy1fktpkhwtv5j30c705mmx9.jpg)
+```txt
+prod_name
+--------------------
+12 inch teddy bear
+18 inch teddy bear
+8 inch teddy bear
+Bird bean bag toy
+Fish bean bag toy
+King doll
+Queen doll
+Rabbit bean bag toy
+Raggedy Ann
+```
 
 >**ORDER BY子句的位置**
 在指定一条ORDER BY子句时，应该保证它是SELECT语句中最后一条子句。如果它不是最后的子句，将会出现错误消息。
@@ -50,10 +62,6 @@ FROM Products
 ORDER BY prod_price DESC, prod_name;
 ```
 
-
-
 DESC关键字只应用到直接位于其前面的列名。
 
-在上例中，只对prod_price列指定DESC，对prod_name列不指定。因此，prod_price列以降序排
-序，而prod_name列（在每个价格内）仍然按标准的升序排序。
-警
+在上例中，只对prod_price列指定DESC，对prod_name列不指定。因此，prod_price列以降序排序，而prod_name列（在每个价格内）仍然按标准的升序排序。
