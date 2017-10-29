@@ -19,6 +19,8 @@
 - 返回DBMS 正使用的特殊信息（如返回用户登录信息）的系统函数
 
 
+### 常用的文本处理函数
+
 | 函　　数                                | 说　　明                |
 |---------------------------------------|-----------------------|
 | LEFT()（或使用子字符串函数）            | 返回字符串左边的字符  |
@@ -29,3 +31,93 @@
 | RTRIM()                               | 去掉字符串右边的空格  |
 | SOUNDEX()                             | 返回字符串的SOUNDEX值 |
 | UPPER() ( Access使用UCASE() )         | 将字符串转换为大写    |
+
+
+>SOUNDEX 考虑了类似的发音字符和音节，使得能对串进行发音比较而不是字母比较
+
+
+> Microsoft Access和PostgreSQL不支持SOUNDEX()
+
+```sql
+SELECT cust_name, cust_contact
+FROM Customers
+WHERE SOUNDEX(cust_contact) = SOUNDEX('Michael Green');
+```
+
+### 日期处理函数
+
+日期和时间采用相应的数据类型存储在表中，每种DBMS都有自己的特殊形式。日期和时间值以特殊的格式存储，以便能快速和有效地排序或过滤，并且节省物理存储空间。
+
+例如,从orders表中检索2012年的所有订单
+
+SQLServer
+
+```sql
+SELECT order_num
+FROM Orders
+WHERE DATEPART(yy, order_date) = 2012;
+```
+
+Access:
+
+```sql
+SELECT order_num
+FROM Orders
+WHERE DATEPART('yyyy', order_date) = 2012;
+```
+
+PostgreSQL:
+
+```sql
+SELECT order_num
+FROM Orders
+WHERE DATE_PART('year', order_date) = 2012;
+```
+
+Oracle没有DATEPART()函数，不过有几个可用来完成相同检索的日期处理函数:
+
+- to_char()函数用来提取日期的成分，to_number()用来将提取出的成分转换为数值
+
+    ```sql
+    SELECT order_num
+    FROM Orders
+    WHERE to_number(to_char(order_date, 'YYYY')) = 2012
+    ```
+- 使用BETWEEN操作符：
+
+    ```sql
+    SELECT order_num
+    FROM Orders
+    WHERE order_date BETWEEN to_date('01-01-2012')
+    AND to_date('12-31-2012');
+    ```
+
+MySQL和MariaDB可使用名为YEAR()的函数从日期中提取年份：
+
+```sql
+SELECT order_num
+FROM Orders
+WHERE YEAR(order_date) = 2012;
+```
+
+SQLite：
+
+```sql
+SELECT order_num
+FROM Orders
+WHERE strftime('%Y', order_date) = 2012;
+```
+
+### 常用的数值处理函数
+
+| 函　　数 | 说　　明             |
+|--------|--------------------|
+| ABS()  | 返回一个数的绝对值 |
+| COS()  | 返回一个角度的余弦 |
+| EXP()  | 返回一个数的指数值 |
+| PI()   | 返回圆周率         |
+| SIN()  | 返回一个角度的正弦 |
+| SQRT() | 返回一个数的平方根 |
+| TAN()  | 返回一个角度的正切 |
+
+主要DBMS的函数中，数值函数是最一致、最统一的函数
